@@ -1,23 +1,13 @@
 " Intergrate openssl with vim
-" Copyright (C) 2014 Josef Fortier
-" 
-" This program is free software; you can redistribute it and/or modify
-" it under the terms of the GNU General Public License as published by
-" the Free Software Foundation; either version 2 of the License, or
-" (at your option) any later version.
-" 
-" This program is distributed in the hope that it will be useful,
-" but WITHOUT ANY WARRANTY; without even the implied warranty of
-" MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-" GNU General Public License for more details.
-" 
-" You should have received a copy of the GNU General Public License
-" along with this program; if not, see <http://www.gnu.org/licenses/>.
+" Author: Josef Fortier
 
-if exists("g:load_cryptomonicon")
+if exists("g:loaded_cryptomonicon")
     finish
 endif
-let g:load_cryptomonicon = 1
+let g:loaded_cryptomonicon = 1
+
+let s:save_cpo = &cpo
+set cpo&vim
 
 function! s:openssl_cmd( cipher, pass, direction )
     let l:direction_option = " -e "
@@ -114,3 +104,5 @@ augroup cryptomonicon_ag
     autocmd BufWritePost *.des3,*.des,*.bf,*.bfa,*.aes,*.idea,*.cast,*.rc2,*.rc4,*.rc5,*.desx call <SID>write_post()
 augroup end
 
+let &cpo = s:save_cpo 
+unlet s:save_cpo
