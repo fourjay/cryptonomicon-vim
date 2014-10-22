@@ -1,0 +1,9 @@
+*cryptonomicon.txt*  Plugin to integrate openssl
+
+Author: Josef Fortier
+License: Same as Vim itself
+
+Introduction                                *cryptonomicon*
+
+This should transparently use openssl to (semi) transparently
+decrypt/encrypt files on the fly based on file extension.
