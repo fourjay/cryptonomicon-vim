@@ -65,7 +65,7 @@ endfunction
 
 function! s:get_cipher()
     let l:cipher = expand("%:e")
-    if l:cipher = "aes"
+    if l:cipher == "aes"
         let l:cipher = "aes-256-cbc"
     endif
     return l:cipher
