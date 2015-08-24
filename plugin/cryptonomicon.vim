@@ -52,6 +52,24 @@ function! s:confirmed_prompt_pass()
     endif
 endfunction
 
+function! s:rekey_password()
+    let l:saved_cmdheight = &cmdheight
+    let l:oldpass  = inputsecret("enter old password: ")
+    let l:newpass  = inputsecret("re-enter password: ")
+    if len( l:newpass ) == 0
+        echo "cannot have blank password"
+        return ""
+    endif
+    let cmdheight = l:saved_cmdheight
+    if l:oldpass == b:openssl_pass
+        let b:openssl_pass = l:newpass
+        return 1
+    else
+        echo "bad password"
+        return 0
+    endif
+endfunction
+
 function! s:singlepass_prompt()
     let l:saved_cmdheight = &cmdheight
     let l:pass = inputsecret("enter password: ")
@@ -106,6 +124,9 @@ augroup cryptomonicon_ag
     autocmd BufWritePre  *.des3,*.des,*.bf,*.bfa,*.aes,*.idea,*.cast,*.rc2,*.rc4,*.rc5,*.desx call <SID>write_pre()
     autocmd BufWritePost *.des3,*.des,*.bf,*.bfa,*.aes,*.idea,*.cast,*.rc2,*.rc4,*.rc5,*.desx call <SID>write_post()
 augroup end
+
+nnoremap <Plug>Rekey :call <SID>rekey_password()<Cr>
+nmap <buffer> X <Plug>Rekey
 
 let &cpo = s:save_cpo 
 unlet s:save_cpo
