@@ -4,6 +4,48 @@ Author: Josef Fortier
 License: Same as Vim itself
 
 Introduction                                *cryptonomicon*
+===========================================================
 
 This should transparently use openssl to (semi) transparently
 decrypt/encrypt files on the fly based on file extension.
+
+Usage                                       *cryptonomicon-usage*
+=================================================================
+
+New file
+
+Create a new file with a recognized (and supported) openssl encryption
+format extension. On write, you will be prompted to enter and to confirm
+a file password.
+
+Existing file
+
+You will be prompted to enter password to decrypt. The decrypted file
+will be loaded into memory. It will be re-encrypted on write with the
+(stored) password.
+
+File Extensions                             *cryptonomicon-extensions*
+======================================================================
+
+file.aes
+file.des
+file.desx
+file.bf
+file.bfa
+
+Re-keying                                *cryptonomicon-passwordrekey*
+======================================================================
+A buffer local mapping for vim's standard "X" mapping will prompt you
+for the old password and the new password.
+
+Inspiration
+======================================================================
+This is clearly inspired by openssl.vim
+http://www.vim.org/scripts/script.php?script_id=2012
+
+But also inspired by discussion in newvim regarding cryptmethod
+(an example) https://github.com/neovim/neovim/issues/701
+
+I'd not say the resulting technique is bulletproof, but the end disk
+files should be as strong as openssl, and likewise as updated.
+
