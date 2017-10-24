@@ -27,16 +27,21 @@ will be loaded into memory. It will be re-encrypted on write with the
 File Extensions                             *cryptonomicon-extensions*
 ======================================================================
 
-file.aes
-file.des
-file.desx
-file.bf
-file.bfa
+     file.aes
+     file.des
+     file.desx
+     file.bf
+     file.bfa
 
 Re-keying                                *cryptonomicon-passwordrekey*
 ======================================================================
-A buffer local mapping for vim's standard "X" mapping will prompt you
-for the old password and the new password.
+A buffer local mapping for vim's standard ``:X`` mapping will prompt you
+for the old password and the new password. This uses a local buffer
+cnorabbrev to override the vim built in.
+
+Plug Mapping                                     *cryptonomicon-Plug*
+======================================================================
+``<Plug>SSLRekey`` is provided to map a rekey option to a mapping
 
 Inspiration
 ======================================================================
