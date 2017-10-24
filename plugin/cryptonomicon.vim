@@ -128,8 +128,8 @@ augroup cryptomonicon_ag
                 \ :cnoreabbrev <buffer> <expr> X (getcmdtype() is# ':' && getcmdline() is# 'X') ? 'SSLRekey' : 'X'
 augroup end
 
-nnoremap <Plug>Rekey :call <SID>rekey_password()<Cr>
-nmap <buffer> X <Plug>Rekey
+nnoremap <Plug>SSLRekey :call <SID>rekey_password()<Cr>
+" nmap <buffer> X <Plug>Rekey
 
 let &cpoptions = s:save_cpo 
 unlet s:save_cpo
