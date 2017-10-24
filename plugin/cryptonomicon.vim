@@ -1,7 +1,7 @@
 " Intergrate openssl with vim
 " Author: Josef Fortier
 
-if exists("g:loaded_cryptomonicon")
+if exists('g:loaded_cryptomonicon')
     finish
 endif
 let g:loaded_cryptomonicon = 1
@@ -11,7 +11,7 @@ set cpoptions&vim
 
 function! s:openssl_cmd( cipher, pass, direction ) abort
     let l:direction_option = ' -e '
-    if a:direction == 'decrypt'
+    if a:direction ==# 'decrypt'
         let l:direction_option = ' -d '
     endif
     let l:pass = shellescape(a:pass)
@@ -21,19 +21,19 @@ function! s:openssl_cmd( cipher, pass, direction ) abort
                 \ . l:direction_option 
                 \ . " -salt -pass file:<( echo '" . l:pass . "')"
     if v:shell_error
-        echohl WarningMsg | echo  "Could not decrypt " . v:shell_error | echohl None
+        echohl WarningMsg | echo  'Could not decrypt ' . v:shell_error | echohl None
         silent! 0,$y
         silent! undo
     endif
 endfunction
 
 function! s:decrypt(cipher, pass) abort
-    call <SID>openssl_cmd(a:cipher, a:pass, "decrypt")
+    call <SID>openssl_cmd(a:cipher, a:pass, 'decrypt')
 endfunction
 
 function! s:encrypt(cipher, pass) abort
-    echom "got pass in encrypt of " . a:pass
-    call <SID>openssl_cmd(a:cipher, a:pass, "encrypt")
+    " echom 'got pass in encrypt of ' . a:pass
+    call <SID>openssl_cmd(a:cipher, a:pass, 'encrypt')
 endfunction
 
 command! SSLDecrypt call <SID>decrypt(
@@ -42,9 +42,9 @@ command! SSLDecrypt call <SID>decrypt(
 
 function! s:confirmed_prompt_pass() abort
     let l:saved_cmdheight = &cmdheight
-    let l:pass  = inputsecret("enter password: ")
-    let l:pass2  = inputsecret("re-enter password: ")
-    let cmdheight = l:saved_cmdheight
+    let l:pass   = inputsecret('enter password: ')
+    let l:pass2  = inputsecret('re-enter password: ')
+    " let cmdheight = l:saved_cmdheight
     if l:pass == l:pass2
         return l:pass
     else
@@ -54,25 +54,25 @@ endfunction
 
 function! s:rekey_password() abort
     let l:saved_cmdheight = &cmdheight
-    let l:oldpass  = inputsecret("enter old password: ")
-    let l:newpass  = inputsecret("re-enter password: ")
+    let l:oldpass  = inputsecret('enter old password: ')
+    let l:newpass  = inputsecret('re-enter password: ')
     if len( l:newpass ) == 0
-        echo "cannot have blank password"
-        return ""
+        echo 'cannot have blank password'
+        return ''
     endif
     let cmdheight = l:saved_cmdheight
     if l:oldpass == b:openssl_pass
         let b:openssl_pass = l:newpass
         return 1
     else
-        echo "bad password"
+        echo 'bad password'
         return 0
     endif
 endfunction
 
 function! s:singlepass_prompt() abort
     let l:saved_cmdheight = &cmdheight
-    let l:pass = inputsecret("enter password: ")
+    let l:pass = inputsecret('enter password: ')
     let cmdheight = l:saved_cmdheight
     return l:pass
 endfunction
@@ -82,15 +82,15 @@ function! s:is_new_file() abort
 endfunction
 
 function! s:get_cipher() abort
-    let l:cipher = expand("%:e")
-    if l:cipher == "aes"
-        let l:cipher = "aes-256-cbc"
+    let l:cipher = expand('%:e')
+    if l:cipher == 'aes'
+        let l:cipher = 'aes-256-cbc'
     endif
     return l:cipher
 endfunction
 
 function! s:readpre() abort
-    setlocal bin
+    setlocal binary
     setlocal viminfo=
     setlocal noswapfile
     if <SID>is_new_file()
