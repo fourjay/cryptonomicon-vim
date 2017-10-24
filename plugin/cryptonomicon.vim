@@ -48,14 +48,14 @@ function! s:confirmed_prompt_pass() abort
     if l:pass == l:pass2
         return l:pass
     else
-        return ""
+        return ''
     endif
 endfunction
 
 function! s:rekey_password() abort
     let l:saved_cmdheight = &cmdheight
-    let l:oldpass  = inputsecret('enter old password: ')
-    let l:newpass  = inputsecret('re-enter password: ')
+    let l:oldpass  = inputsecret('openSSL enter old password: ')
+    let l:newpass  = <SID>confirmed_prompt_pass()
     if len( l:newpass ) == 0
         echo 'cannot have blank password'
         return ''
@@ -72,7 +72,7 @@ endfunction
 
 function! s:singlepass_prompt() abort
     let l:saved_cmdheight = &cmdheight
-    let l:pass = inputsecret('enter password: ')
+    let l:pass = inputsecret('openSSL enter password: ')
     let cmdheight = l:saved_cmdheight
     return l:pass
 endfunction
@@ -117,12 +117,15 @@ function! s:write_post() abort
     call <SID>readpost()
 endfunction
 
+command! SSLRekey :call <SID>rekey_password()
 augroup cryptomonicon_ag
     autocmd!
     autocmd BufReadPre   *.des3,*.des,*.bf,*.bfa,*.aes,*.idea,*.cast,*.rc2,*.rc4,*.rc5,*.desx call <SID>readpre()
     autocmd BufReadPost  *.des3,*.des,*.bf,*.bfa,*.aes,*.idea,*.cast,*.rc2,*.rc4,*.rc5,*.desx call <SID>readpost()
     autocmd BufWritePre  *.des3,*.des,*.bf,*.bfa,*.aes,*.idea,*.cast,*.rc2,*.rc4,*.rc5,*.desx call <SID>write_pre()
     autocmd BufWritePost *.des3,*.des,*.bf,*.bfa,*.aes,*.idea,*.cast,*.rc2,*.rc4,*.rc5,*.desx call <SID>write_post()
+    autocmd BufRead      *.des3,*.des,*.bf,*.bfa,*.aes,*.idea,*.cast,*.rc2,*.rc4,*.rc5,*.desx 
+                \ :cnoreabbrev <buffer> <expr> X (getcmdtype() is# ':' && getcmdline() is# 'X') ? 'SSLRekey' : 'X'
 augroup end
 
 nnoremap <Plug>Rekey :call <SID>rekey_password()<Cr>
