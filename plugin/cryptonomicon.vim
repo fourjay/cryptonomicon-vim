@@ -1,10 +1,10 @@
 " Intergrate openssl with vim
 " Author: Josef Fortier
 
-if exists('g:loaded_cryptomonicon')
+if exists('g:loaded_cryptonomicon')
     finish
 endif
-let g:loaded_cryptomonicon = 1
+let g:loaded_cryptonomicon = 1
 
 let s:save_cpo = &cpoptions
 set cpoptions&vim
@@ -118,7 +118,7 @@ function! s:write_post() abort
 endfunction
 
 command! SSLRekey :call <SID>rekey_password()
-augroup cryptomonicon_ag
+augroup cryptonomicon_ag
     autocmd!
     autocmd BufReadPre   *.des3,*.des,*.bf,*.bfa,*.aes,*.idea,*.cast,*.rc2,*.rc4,*.rc5,*.desx call <SID>readpre()
     autocmd BufReadPost  *.des3,*.des,*.bf,*.bfa,*.aes,*.idea,*.cast,*.rc2,*.rc4,*.rc5,*.desx call <SID>readpost()
