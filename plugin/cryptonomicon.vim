@@ -10,6 +10,22 @@ let s:save_cpo = &cpoptions
 set cpoptions&vim
 
 function! s:openssl_cmd( cipher, pass, direction ) abort
+    " try current message digest default
+    call s:_openssl_cmd( a:cipher, 'sha256', a:pass, a:direction )
+    if v:shell_error
+        " redo and try older version
+        silent! 0,$y
+        silent! undo
+        call s:_openssl_cmd( a:cipher, 'md5', a:pass, a:direction )
+        if v:shell_error
+            echohl WarningMsg | echo  'Could not decrypt ' . v:shell_error | echohl None
+            silent! 0,$y
+            silent! undo
+        endif
+    endif
+endfunction
+
+function! s:_openssl_cmd( cipher, digest, pass, direction ) abort
     let l:direction_option = ' -e '
     if a:direction ==# 'decrypt'
         let l:direction_option = ' -d '
@@ -17,14 +33,11 @@ function! s:openssl_cmd( cipher, pass, direction ) abort
     let l:pass = shellescape(a:pass)
     let l:cipher= shellescape(a:cipher)
     silent execute 
-                \ '0,$ ! openssl ' . l:cipher
+                \ '0,$ ! openssl ' 
+                \ . l:cipher
+                \ . " -md " . a:digest
                 \ . l:direction_option 
                 \ . " -salt -pass file:<( echo '" . l:pass . "')"
-    if v:shell_error
-        echohl WarningMsg | echo  'Could not decrypt ' . v:shell_error | echohl None
-        silent! 0,$y
-        silent! undo
-    endif
 endfunction
 
 function! s:decrypt(cipher, pass) abort
