@@ -70,7 +70,7 @@ function! s:rekey_password() abort
     let l:oldpass  = inputsecret('openSSL| enter old password: ')
     let l:newpass  = <SID>confirmed_prompt_pass()
     if len( l:newpass ) == 0
-        echo 'cannot have blank password'
+        echohl WarningMsg | echo  'cannot have blank password' . v:shell_error | echohl None
         return ''
     endif
     let &cmdheight = l:saved_cmdheight
