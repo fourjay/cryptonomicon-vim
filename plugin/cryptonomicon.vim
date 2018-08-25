@@ -55,8 +55,8 @@ command! SSLDecrypt call <SID>decrypt(
 
 function! s:confirmed_prompt_pass() abort
     let l:saved_cmdheight = &cmdheight
-    let l:pass   = inputsecret('enter password: ')
-    let l:pass2  = inputsecret('re-enter password: ')
+    let l:pass   = inputsecret('openSSL| enter password: ')
+    let l:pass2  = inputsecret('openSSL|re-enter password: ')
     " let cmdheight = l:saved_cmdheight
     if l:pass == l:pass2
         return l:pass
@@ -67,7 +67,7 @@ endfunction
 
 function! s:rekey_password() abort
     let l:saved_cmdheight = &cmdheight
-    let l:oldpass  = inputsecret('openSSL enter old password: ')
+    let l:oldpass  = inputsecret('openSSL| enter old password: ')
     let l:newpass  = <SID>confirmed_prompt_pass()
     if len( l:newpass ) == 0
         echo 'cannot have blank password'
@@ -85,7 +85,7 @@ endfunction
 
 function! s:singlepass_prompt() abort
     let l:saved_cmdheight = &cmdheight
-    let l:pass = inputsecret('openSSL enter password: ')
+    let l:pass = inputsecret('openSSL| enter password: ')
     let cmdheight = l:saved_cmdheight
     return l:pass
 endfunction
