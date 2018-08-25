@@ -73,7 +73,7 @@ function! s:rekey_password() abort
         echo 'cannot have blank password'
         return ''
     endif
-    let cmdheight = l:saved_cmdheight
+    let &cmdheight = l:saved_cmdheight
     if l:oldpass == b:openssl_pass
         let b:openssl_pass = l:newpass
         return 1
@@ -86,7 +86,7 @@ endfunction
 function! s:singlepass_prompt() abort
     let l:saved_cmdheight = &cmdheight
     let l:pass = inputsecret('openSSL| enter password: ')
-    let cmdheight = l:saved_cmdheight
+    let &cmdheight = l:saved_cmdheight
     return l:pass
 endfunction
 
@@ -96,7 +96,7 @@ endfunction
 
 function! s:get_cipher() abort
     let l:cipher = expand('%:e')
-    if l:cipher == 'aes'
+    if l:cipher ==? 'aes'
         let l:cipher = 'aes-256-cbc'
     endif
     return l:cipher
